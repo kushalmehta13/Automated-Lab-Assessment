@@ -3,3 +3,21 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  form(id='myform' name='myform' method='post' action='/compilecode' align='center')
+    h3 Code
+    textarea(rows='13' cols='100' id='code' name='code')
+    br
+    h3 Input
+    textarea(row='10' cols='100' id='input' name='input')
+    br
+    | Language
+    select(name='lan')
+      option(value='C') C
+    br
+    | Compile with input:
+    input(type='radio' name='inputRadio' id='inputRadio' value='true') 
+    | Yes
+    input(type='radio' name='inputRadio' id='inputRadio' value='false')
+    | No
+    br
+    input(type='submit' value='submit' name=submit)
