@@ -3,7 +3,7 @@ extends layout
 block content
   h1 Automated Lab Assessment
   p Welcome to the demo page
-  form(id='myform' name='myform' method='post' action='/compilecode' align='center')
+  .form(id='myform' name='myform' align='center')
     h3 Code
     textarea(rows='13' cols='100' id='code' name='code')
     br
@@ -11,13 +11,13 @@ block content
     textarea(row='10' cols='100' id='input' name='input')
     br
     | Language
-    select(name='lan')
+    select(name='lan' id='lan')
       option(value='C') C
     br
     | Compile with input:
     input(type='radio' name='inputRadio' id='inputRadio' value='true') 
     | Yes
-    input(type='radio' name='inputRadio' id='inputRadio' value='false')
+    input(type='radio' name='inputRadio' value='false')
     | No
     br
-    input(type='submit' value='submit' name=submit)
+    input(type='button' value='submit' onclick='submitCode()' name=submit)
