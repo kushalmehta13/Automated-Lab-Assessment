@@ -3,6 +3,19 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+.mainTitle {
+  font: 4em "Courier New";
+  padding: 8%;
+}
+
+.text {
+  color: #00ad9a; 
+}
+
+.form-control {
+  width: 70%;
+}
+
 a {
   color: #00B7FF;
 }

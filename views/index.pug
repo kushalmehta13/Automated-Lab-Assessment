@@ -1,23 +1,31 @@
 extends layout
-
 block content
-  h1 Automated Lab Assessment
-  p Welcome to the demo page
-  .form(id='myform' name='myform' align='center')
-    h3 Code
-    textarea(rows='13' cols='100' id='code' name='code')
-    br
-    h3 Input
-    textarea(row='10' cols='100' id='input' name='input')
-    br
-    | Language
-    select(name='lan' id='lan')
-      option(value='C') C
-    br
-    | Compile with input:
-    input(type='radio' name='inputRadio' id='inputRadio' value='true') 
-    | Yes
-    input(type='radio' name='inputRadio' value='false')
-    | No
-    br
-    input(type='button' value='submit' onclick='submitCode()' name=submit)
+  .background
+    .row
+      .col-md-12
+        .mainTitle.text(align='center') {LabWork}
+    .row
+      div(align='center').col-md-6
+        h2(align='center') Teacher Login
+        br
+        form.text
+          p
+            input#email.form-control(type='email' placeholder='email')
+          p
+            input#pwd.form-control(type='password' placeholder='password')
+          p
+            button.btn.btn-default(type='submit') Submit
+
+      div(align='center').col-md-6
+        h2(align='center') Student Login
+        br
+        form(action="/code").text
+          p
+            input#email.form-control(type='email' placeholder='email')
+          p
+            input#pwd.form-control(type='password' placeholder='password')
+          p
+            button.btn.btn-default(type='submit') Submit
+
+    a(href="/code") code
+  

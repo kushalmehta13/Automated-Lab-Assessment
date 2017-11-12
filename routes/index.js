@@ -10,19 +10,27 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/code', function(req, res, next) {
+	res.render('code', { title: 'Solve' });
+  });
+
+router.post('/code' , function(req, res, next) {
+	res.render('code', { title: 'Solve' });
+});
+
 router.post('/compilecode', function(req, res, next) {
-  	var code = req.body.code;
+  	var code = req.body.code;	
 	var input = req.body.input;
     var inputRadio = req.body.inputRadio;
     var lang = req.body.lang;
 
     if(inputRadio === "true")
-        {
-        	var envData = { OS : "linux" , cmd : "gcc"};
+        {    
+        	var envData = { OS : "linux" , cmd : "gcc"};	   	
         	compiler.compileCPPWithInput(envData , code ,input , function (data) {
         		if(data.error)
         		{
-        			res.send(data.error);
+        			res.send(data.error);    		
         		}
         		else
         		{
@@ -32,18 +40,18 @@ router.post('/compilecode', function(req, res, next) {
 	   }
 	   else
 	   {
-
-	   	var envData = { OS : "linux" , cmd : "gcc"};
+	   	
+	   	var envData = { OS : "linux" , cmd : "gcc"};	   
         	compiler.compileCPP(envData , code , function (data) {
         	if(data.error)
         	{
         		res.send(data.error);
-        	}
+        	}    	
         	else
         	{
         		res.send(data.output);
         	}
-
+    
             });
 	   }
 
