@@ -39,11 +39,11 @@ router.post('/compilecode', function(req, res, next) {
     var lang = req.body.lang;
 
     // Store code in bucket
-    fs.writeFile("cache/tmp.cpp", code, function(err) {
+    fs.writeFile("./cache/tmp.cpp", code, function(err) {
       if(err) return console.log(err);
-      aws.command('s3 cp cache/tmp.cpp s3://sourcecodestore/file1.cpp')
+      aws.command('s3 cp ~/Automated-Lab-Assessment/cache/tmp.cpp s3://sourcecodestore/file1.cpp')
       .then((data) => {
-        console.log(data);
+        console.log('Done');
       });
     });
 
