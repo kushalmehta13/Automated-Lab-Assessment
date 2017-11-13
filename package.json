@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "aws-cli-js": "^2.0.2",
     "body-parser": "~1.17.1",
     "compilex": "^0.7.4",
     "cookie-parser": "~1.4.3",
