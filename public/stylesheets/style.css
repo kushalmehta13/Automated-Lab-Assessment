@@ -1,4 +1,4 @@
-body {
+.bodyPadding {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
@@ -19,3 +19,18 @@ body {
 a {
   color: #00B7FF;
 }
+
+.navbar-inverse {
+  padding: 0.5%;
+  font-size: 1.4em;
+}
+ 
+/* NavBar Brand Color */
+.navbar-inverse .navbar-brand {
+  color: #00ad9a;
+}
+
+.navbar-inverse .navbar-brand:hover {
+  color: #08fcdb;
+}
+/* NavBar Brand Color END */
