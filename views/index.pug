@@ -1,6 +1,6 @@
 extends layout
 block content
-  .background
+  .background.bodyPadding
     .row
       .col-md-12
         .mainTitle.text(align='center') {LabWork}
@@ -8,7 +8,7 @@ block content
       div(align='center').col-md-6
         h2(align='center') Teacher Login
         br
-        form.text
+        form(method='POST' action="/teacherDashboard").text
           p
             input#email.form-control(type='email' placeholder='email')
           p
@@ -19,13 +19,10 @@ block content
       div(align='center').col-md-6
         h2(align='center') Student Login
         br
-        form(action="/code").text
+        form(method='POST' action="/studentDashboard").text
           p
             input#email.form-control(type='email' placeholder='email')
           p
             input#pwd.form-control(type='password' placeholder='password')
           p
             button.btn.btn-default(type='submit') Submit
-
-    a(href="/code") code
-  

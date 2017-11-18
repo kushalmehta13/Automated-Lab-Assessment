@@ -28,8 +28,14 @@ router.get('/code', function(req, res, next) {
 	res.render('code', { title: 'Solve' });
   });
 
-router.post('/code' , function(req, res, next) {
-	res.render('code', { title: 'Solve' });
+router.post('/studentDashboard' , function(req, res, next) {
+	//Login details are check with DB and then only page is rendered
+	res.render('studentDashboard', { title: 'Solve' });
+});
+
+router.post('/teacherDashboard' , function(req, res, next) {
+	//Login details are check with DB and then only page is rendered
+	res.render('teacherDashboard', { title: 'Solve' });
 });
 
 router.post('/compilecode', function(req, res, next) {
