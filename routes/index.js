@@ -1,9 +1,17 @@
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
+var database = require('../database.js');
 
-// AWS stuff
-var Aws = require('aws-sdk');
+// Connect to RDS
+var connection = database.connectToRDS();
+connection.connect((err) => {
+  if(err) throw err;
+  console.log('Connected to DB');
+});
+
+// Connect to S3
+const Aws = require('aws-sdk');
 var s3 = new Aws.S3();
 var bucket = 'sourcecodestore';
 
