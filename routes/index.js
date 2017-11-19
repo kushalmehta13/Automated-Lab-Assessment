@@ -1,22 +1,11 @@
 var express = require('express');
-var router = express.Router
+var router = express.Router();
 var fs = require('fs');
 
 // AWS stuff
 var Aws = require('aws-sdk');
 var s3 = new Aws.S3();
 var bucket = 'sourcecodestore';
-
-// AWS stuff
-// var awsCli = require('aws-cli-js');
-// var Options = awsCli.Options;
-// var Aws = awsCli.Aws;
-// var aws = new Aws(options);
-// var options = new Options(
-//   /* accessKey    */ 'AKIAIEWHW44PNSPKSWOQ',
-//   /* secretKey    */ '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',
-//   /* currentWorkingDirectory */ null
-// );
 
 //compileX
 var compiler = require('compilex');
@@ -49,19 +38,10 @@ router.post('/compilecode', function(req, res, next) {
     var lang = req.body.lang
 
     // Store code in bucket
-    // fs.writeFile("./cache/tmp.cpp", code, function(err) {
-    //   if(err) return console.log(err);
-    //   aws.command('s3 cp ~/Automated-Lab-Assessment/cache/tmp.cpp s3://sourcecodestore/file1.cpp')
-    //   .then((data) => {
-    //     console.log('Done');
-    //   });
-    // });
-
-    // Store code in bucket
     s3.putObject({
       Bucket : bucket,
       Key : "file1.cpp",
-      Body : new Buffer(code, 'binary')
+      Body : code
     }, (err, data) => {
       if(err) throw err;
       else console.log(data);
