@@ -8,21 +8,22 @@ block content
       div(align='center').col-md-6
         h2(align='center') Teacher Login
         br
-        form(method='POST' action="/teacherDashboard").text
+        form(method='POST' action='/teacherDashboard')
           p
-            input#email.form-control(type='email' placeholder='email')
+            input#email1.form-control(type='email' placeholder='email')
           p
-            input#pwd.form-control(type='password' placeholder='password')
+            input#pwd1.form-control(type='password' placeholder='password')
           p
-            button.btn.btn-default(type='submit') Submit
+            button.btn.btn-default(type='submit' onclick='loginAsTeacher(event)') Submit
 
       div(align='center').col-md-6
         h2(align='center') Student Login
         br
-        form(method='POST' action="/studentDashboard").text
+        form(method='POST' action='/studentDashboard' enctype='application/x-www-form-urlencoded')
           p
-            input#email.form-control(type='email' placeholder='email')
+            input#email2.form-control(name='email2' type='email' placeholder='email')
           p
-            input#pwd.form-control(type='password' placeholder='password')
+            input#pwd2.form-control(name='pwd2' type='password' placeholder='password')
           p
             button.btn.btn-default(type='submit') Submit
+          
