@@ -2,16 +2,25 @@ extends layout
 block content
   meta(charset="utf-8")
   link(rel="stylesheet", href="/js/codemirror/lib/codemirror.css")
-
+  link(rel="stylesheet", href="/stylesheets/nice_select.min.css")
+  script(src="/js/nice_select.min.js")
   script(src="/js/codemirror/lib/codemirror.js")
   script(src="/js/codemirror/addon/display/placeholder.js")
 
   .container
     .row
+      h2 Question Title
+      p Write  program to...
+      br
+      select.change.pull-right(name='someName')
+        option(value="placeholder") C
+        option C++
+      script.
+        $('document').ready(function(){ $('.change').niceselect();})
+    .row
       .col-12-md
-        h2 Question Title
-        p Write  program to...
-        textarea#code(name="code", placeholder="Write code here", class="work")
+        br
+        textarea#code(name="code", placeholder="Write code here", class="work", width="25")
         br
         p
           button.btn.btn-default.code-send(onclick="submit()") Submit
@@ -25,6 +34,6 @@ block content
     lineNumbers : true
     });
     function submit() {
-      submitCode(editor, $("#output"));
+      submitCode(editor, $("#output"), $(".change"));
     }
     

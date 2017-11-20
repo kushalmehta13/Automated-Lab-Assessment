@@ -41,7 +41,7 @@ a {
 }
 
 .CodeMirror-empty { 
-  outline: 1px solid #00ad9a; 
+  outline: 2px solid #00ad9a; 
 }
 
 .CodeMirror-empty.CodeMirror-focused { 
@@ -64,4 +64,5 @@ a {
   color: #00ad9a;
   border-color: #00ad9a;
 }
+
 
