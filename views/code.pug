@@ -1,24 +1,22 @@
 extends layout
-
 block content
-  h1 Question Title
-  p Question body
-  
-  .form(id='myform' name='myform' align='center')
-    h3 Code
-    textarea(rows='13' cols='100' id='code' name='code')
-    br
-    h3 Input
-    textarea(row='10' cols='100' id='input' name='input')
-    br
-    | Language
-    select(name='lan' id='lan')
-      option(value='C') C
-    br
-    | Compile with input:
-    input(type='radio' name='inputRadio' id='inputRadio' value='true') 
-    | Yes
-    input(type='radio' name='inputRadio' value='false')
-    | No
-    br
-    input(type='button' value='submit' onclick='submitCode()' name=submit)
+  meta(charset="utf-8")
+  link(rel="stylesheet", href="/js/codemirror/lib/codemirror.css")
+
+  script(src="/js/codemirror/lib/codemirror.js")
+  script(src="/js/codemirror/addon/display/placeholder.js")
+
+  .container
+    .row
+      .col-12-md
+        h2 Question Title
+        p Write  program to...
+        form(action="")
+          textarea#code(name="code", placeholder="Write code here")
+          br
+          p
+            button.btn.btn-default.code-send(type='submit', align="right") Submit
+  script.
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    lineNumbers : true
+    });

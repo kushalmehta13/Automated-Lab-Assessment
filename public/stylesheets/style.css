@@ -34,3 +34,34 @@ a {
   color: #08fcdb;
 }
 /* NavBar Brand Color END */
+
+/* Code Editor */
+.CodeMirror { 
+  border: 1px solid silver; 
+}
+
+.CodeMirror-empty { 
+  outline: 1px solid #00ad9a; 
+}
+
+.CodeMirror-empty.CodeMirror-focused { 
+  outline: none; 
+}
+
+.CodeMirror pre.CodeMirror-placeholder { 
+  color: #999;
+}
+
+.code-send {
+  padding: 8px;
+  background-color: #00ad9a;
+  color: white;
+  border-color: #00ad9a;
+}
+
+.code-send:hover {
+  background-color: white;
+  color: #00ad9a;
+  border-color: #00ad9a;
+}
+
