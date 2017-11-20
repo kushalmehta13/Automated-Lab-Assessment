@@ -1,13 +1,20 @@
-function submitCode(element,out, langselect) {
+function submitCode(element, out, langselect, inputcheckbox, custominput) {
   const code = element.getValue();
-  const inputRadioVal = $('input[name=inputRadio]:checked').val();
-  const input = $('#input').val();
-  const lang = langselect.value;;
+  const checkbox = inputcheckbox.val();
+  const input = custominput.val();
+  const lang = langselect.val();
+  check = "";
+  if(checkbox == 'on') {
+    check = 'Yes';
+  }
+  else {
+    check = 'No';
+  }
 
   $.post('/compilecode', {
     'code' : code,
-    'input' : 'No',
-    'inputRadio' : 'No',
+    'input' : input,
+    'inputRadio' : check,
     'lang' : lang
   }).done((output) => {
     // TODO: format and display the output as needed

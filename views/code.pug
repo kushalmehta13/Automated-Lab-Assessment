@@ -22,8 +22,13 @@ block content
         br
         textarea#code(name="code", placeholder="Write code here", class="work", width="25")
         br
+        textarea#custom-input(cols="30", rows="4")
+        br
+        input#cust(type="checkbox")
+        span 
+          |   Custom Input
         p
-          button.btn.btn-default.code-send(onclick="submit()") Submit
+          button.btn.btn-default.code-send.pull-right(onclick="submit()") Submit
     .row
       .col-12-md
         h2 Output
@@ -34,6 +39,6 @@ block content
     lineNumbers : true
     });
     function submit() {
-      submitCode(editor, $("#output"), $(".change"));
+      submitCode(editor, $("#output"), $(".change"), $("#cust"), $("#custom-input"));
     }
     

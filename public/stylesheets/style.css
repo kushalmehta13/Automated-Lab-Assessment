@@ -65,4 +65,14 @@ a {
   border-color: #00ad9a;
 }
 
+#custom-input {
+  border: 1px solid #00ad9a; 
+}
+
+#custom-input:focus {
+  outline: none; 
+}
+
+
+
 
