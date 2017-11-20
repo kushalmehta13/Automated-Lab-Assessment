@@ -11,12 +11,20 @@ block content
       .col-12-md
         h2 Question Title
         p Write  program to...
-        form(action="")
-          textarea#code(name="code", placeholder="Write code here")
-          br
-          p
-            button.btn.btn-default.code-send(type='submit', align="right") Submit
+        textarea#code(name="code", placeholder="Write code here", class="work")
+        br
+        p
+          button.btn.btn-default.code-send(onclick="submit()") Submit
+    .row
+      .col-12-md
+        h2 Output
+        div
+          p(id="output")  Waiting for results...
   script.
     var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
     lineNumbers : true
     });
+    function submit() {
+      submitCode(editor, $("#output"));
+    }
+    
