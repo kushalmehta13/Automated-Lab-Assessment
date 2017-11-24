@@ -65,7 +65,7 @@ router.post('/compilecode', function(req, res, next) {
       if(err) throw err;
       else console.log(data);
       codeSimilarityCheck.checkSimilarity('file1.cpp', 'Stu_ans/file2.cpp', 'res.txt');
-      staticCodeAnalysis.analyseFile('./StaticCodeAnalysis/sample.c', './StaticCodeAnalysis/result.txt');
+      staticCodeAnalysis.analyseFile('file1.cpp', './StaticCodeAnalysis/result.txt');
     });
 
     // Compile code and serve output

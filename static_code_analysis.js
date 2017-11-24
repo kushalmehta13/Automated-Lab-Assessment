@@ -2,6 +2,11 @@ const fs = require('fs');
 const nrc = require('node-run-cmd');
 const natural = require('natural');
 
+// Connect to S3
+const Aws = require('aws-sdk');
+const s3 = new Aws.S3();
+const bucket = 'sourcecodestore';
+
 var exports = {};
 
 function finalScore(count) {
@@ -32,7 +37,14 @@ function getScore(data) {
 	}
 	console.log(count);
 	var badness = finalScore(count);
-	console.log("Badness Score : " + badness);
+	s3.putObject({
+		Bucket : bucket,
+		Key : "badness.txt",
+		Body : "Badness score : " + badness,
+	}, function(err, data) {
+		if(err) throw err;
+		else console.log('Badness pushed');
+	});
 }
 
 function readMyFile(path) {
@@ -46,8 +58,19 @@ function readMyFile(path) {
 }
 
 exports.analyseFile = function(codeFile, errorFile) {
-	nrc.run('cppcheck ' + codeFile + ' 2> ' + errorFile).then(function(exitCodes) {
-		readMyFile(errorFile);
+	s3.getObject({
+		Bucket : bucket,
+		Key : 'file1.cpp'
+	}, function(err, data) {
+		if(err) console.error(err);
+		else {
+			fs.writeFile("./temp/codeFile.cpp", data.Body.toString(), function(err) {
+				if(err) throw err;
+				nrc.run('cppcheck ./temp/codeFile.cpp' + ' 2> ' + errorFile).then(function(exitCodes) {
+					readMyFile(errorFile);
+				});
+			});
+		}
 	});
 };
 
