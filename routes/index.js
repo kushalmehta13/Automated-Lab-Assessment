@@ -56,6 +56,11 @@ router.post('/compilecode', function(req, res, next) {
     const inputRadio = req.body.inputRadio;
     const lang = req.body.lang;
 
+    con.query("SELECT QUES_TEXT, INPUT, EXPECTED_OUTPUT FROM QUES WHERE SUB_ID == 1 AND QUES_ID == 1", function (err, result) {
+      if (err) throw err;
+      console.log(result);
+    });
+
     // Store code in bucket and run similarity check
     s3.putObject({
       Bucket : bucket,
@@ -70,8 +75,9 @@ router.post('/compilecode', function(req, res, next) {
 
     // Compile code and serve output
     if(inputRadio === "true") {
-    	var envData = { OS : "linux" , cmd : "gcc"};
-    	compiler.compileCPPWithInput(envData , code ,input , function (data) {
+      var envData = { OS : "linux" , cmd : "gcc"};
+      
+      compiler.compileCPPWithInput(envData , code ,input , function (data) {
         compiler.flushSync();
     		if(data.error) res.send(data.error);
     		else res.send(data.output);
@@ -85,6 +91,20 @@ router.post('/compilecode', function(req, res, next) {
       	else res.send(data.output);
       });
     }
+});
+
+// session setup
+var session = require('express-session');
+router.use(session({secret : '1234'}));
+
+router.get('/pagecounter', function(req, res){
+  if(req.session.page_views){
+     req.session.page_views++;
+     res.send("You visited this page " + req.session.page_views + " times");
+  } else {
+     req.session.page_views = 1;
+     res.send("Welcome to this page for the first time!");
+  }
 });
 
 module.exports = router;
