@@ -1,0 +1,1 @@
+[StaticCodeAnalysis/sample.c:4]: (error) Uninitialized variable: p

@@ -6,6 +6,7 @@ const host = "seproject.clwivtvb39ox.us-east-2.rds.amazonaws.com";
 const database = "SEProject";
 const user = "SEProject";
 const password = "seproject";
+const port = 3306;
 
 exports.connectToRDS = function() {
   var connection = mysql.createConnection({
@@ -13,7 +14,7 @@ exports.connectToRDS = function() {
     database: database,
     user: user,
     password: password,
-    port: 3306
+    port: port
   });
   return connection;
 };

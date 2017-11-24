@@ -2,7 +2,9 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 
-var database = require('../database.js');
+const database = require('../database.js');
+const codeSimilarityCheck = require('../code_similarity_check.js');
+const staticCodeAnalysis = require('../static_code_analysis.js');
 
 // For login token
 const secret = 'secret';
@@ -49,12 +51,12 @@ router.post('/teacherDashboard' , function(req, res, next) {
 });
 
 router.post('/compilecode', function(req, res, next) {
-  	var code = req.body.code;
-    var input = req.body.input;
-    var inputRadio = req.body.inputRadio;
-    var lang = req.body.lang
+  	const code = req.body.code;
+    const input = req.body.input;
+    const inputRadio = req.body.inputRadio;
+    const lang = req.body.lang;
 
-    // Store code in bucket
+    // Store code in bucket and run similarity check
     s3.putObject({
       Bucket : bucket,
       Key : "file1.cpp",
@@ -62,12 +64,15 @@ router.post('/compilecode', function(req, res, next) {
     }, (err, data) => {
       if(err) throw err;
       else console.log(data);
+      codeSimilarityCheck.checkSimilarity('file1.cpp', 'Stu_ans/file2.cpp', 'res.txt');
+      staticCodeAnalysis.analyseFile('./StaticCodeAnalysis/sample.c', './StaticCodeAnalysis/result.txt');
     });
 
     // Compile code and serve output
     if(inputRadio === "true") {
     	var envData = { OS : "linux" , cmd : "gcc"};
     	compiler.compileCPPWithInput(envData , code ,input , function (data) {
+        compiler.flushSync();
     		if(data.error) res.send(data.error);
     		else res.send(data.output);
     	});
@@ -75,6 +80,7 @@ router.post('/compilecode', function(req, res, next) {
     else {
     	var envData = { OS : "linux" , cmd : "gcc"};
       compiler.compileCPP(envData, code, function (data) {
+        compiler.flushSync();
       	if(data.error) res.send(data.error);
       	else res.send(data.output);
       });
