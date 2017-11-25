@@ -15,7 +15,7 @@ function finalScore(count) {
 	return badness;
 }
 
-function getScore(data) {
+function getScore(data, done) {
 	var count = {
 		"error" : 0,
 		"warning" : 0,
@@ -37,27 +37,31 @@ function getScore(data) {
 	}
 	console.log(count);
 	var badness = finalScore(count);
-	s3.putObject({
-		Bucket : bucket,
-		Key : "badness.txt",
-		Body : "Badness score : " + badness,
-	}, function(err, data) {
-		if(err) throw err;
-		else console.log('Badness pushed');
-	});
+	return done(badness);
 }
 
-function readMyFile(path) {
+function readMyFile(path, scapath) {
 	let content;
 	try {
 		content = fs.readFileSync(path, 'utf-8');
 	} catch(ex) {
 		console.log(ex);
 	}
-	getScore(content);
+	getScore(content, function(badness) {
+		console.log('getScore:' + badness);
+		console.log(scapath);
+		s3.putObject({
+			Bucket : bucket,
+			Key : scapath,
+			Body : "Badness score : " + badness,
+		}, function(err, data) {
+			if(err) throw err;
+			else console.log('Badness pushed');
+		});
+	});
 }
 
-exports.analyseFile = function(codeFile, errorFile) {
+exports.analyseFile = function(codeFile, errorFile, scapath) {
 	s3.getObject({
 		Bucket : bucket,
 		Key : 'file1.cpp'
@@ -67,7 +71,7 @@ exports.analyseFile = function(codeFile, errorFile) {
 			fs.writeFile("./temp/codeFile.cpp", data.Body.toString(), function(err) {
 				if(err) throw err;
 				nrc.run('cppcheck ./temp/codeFile.cpp' + ' 2> ' + errorFile).then(function(exitCodes) {
-					readMyFile(errorFile);
+					readMyFile(errorFile, scapath);
 				});
 			});
 		}

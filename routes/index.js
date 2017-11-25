@@ -71,6 +71,25 @@ router.post('/getQuestion', function(req, res) {
   });
 });
 
+router.post('/getBadness', function(req, res) {
+  const email = req.body.email;
+  const q_id = req.body.q_id;
+  const filepath = email.split('@')[0] + '/sca' + q_id + '.txt';
+  s3.getObject({
+    Bucket : bucket,
+    Key : filepath
+  }, (err, data) => {
+    if(err) res.send({
+      "data" : null,
+      "status" : 500
+    });
+    else res.send({
+      "data" : data.Body.toString(),
+      "status" : 200
+    });
+  });
+});
+
 router.post('/compilecode', function(req, res, next) {
   	const code = req.body.code;
     const input = req.body.input;
@@ -84,19 +103,12 @@ router.post('/compilecode', function(req, res, next) {
     const cscpath = email.split('@')[0] + '/csc' + q_id + '.txt';
     const scapath = email.split('@')[0] + '/sca' + q_id + '.txt';
 
-    console.log(email);
-    console.log(q_id);
-    console.log(filepath);
-    console.log(cscpath);
-    console.log(scapath);
-
     // Store code in bucket and run similarity check
     s3.putObject({
       Bucket : bucket,
       Key : filepath,
       Body : code
     }, (err, data) => {
-      console.log('s3 done?');
       if(err) throw err;
       else console.log(data);
       codeSimilarityCheck.checkSimilarity(filepath, 'Stu_ans/file2.cpp', cscpath);
@@ -106,7 +118,6 @@ router.post('/compilecode', function(req, res, next) {
     // Compile code and serve output
     if(inputRadio === "true") {
       var envData = { OS : "linux" , cmd : "gcc"};
-      console.log('compiler');
       compiler.compileCPPWithInput(envData , code ,input , function (data) {
         compiler.flushSync();
     		if(data.error) res.send(data.error);
@@ -114,7 +125,6 @@ router.post('/compilecode', function(req, res, next) {
     	});
 	  }
     else {
-      console.log('compiler');
     	var envData = { OS : "linux" , cmd : "gcc"};
       compiler.compileCPP(envData, code, function (data) {
         compiler.flushSync();
