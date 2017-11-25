@@ -4,6 +4,11 @@ block content
     var email = !{JSON.stringify(email)}
     sessionStorage.SessionName = "StudentDetails"
     sessionStorage.setItem("email", email)
+    $.post('/getQuestion', {
+      "q_id" : "1"
+    }).done(function(output) {
+      console.log(output);
+    });
   nav.navbar.navbar-inverse.navbar-static-top
     .container-fluid
       .navbar-header
