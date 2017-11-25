@@ -50,6 +50,25 @@ router.post('/teacherDashboard' , function(req, res, next) {
 	res.render('teacherDashboard', { title: 'Solve' });
 });
 
+// Sample get question
+router.post('/getQuestion', function(req, res) {
+  const q_id = req.body.q_id;
+  const sub_id = req.body.sub_id;
+  database.getQuestion(connection, sub_id, q_id, function(data, status) {
+    if(status != 200) res.sendStatus(status);
+    s3.getObject({
+      Bucket : bucket,
+      Key : 'Questions/Ques1.txt'
+    }, function(err, data) {
+      if(err) throw err;
+      res.send({
+        "data" : data.Body.toString(),
+        "status" : status
+      });
+    });
+  });
+});
+
 router.post('/compilecode', function(req, res, next) {
   	const code = req.body.code;
     const input = req.body.input;

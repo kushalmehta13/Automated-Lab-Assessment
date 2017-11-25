@@ -19,6 +19,14 @@ exports.connectToRDS = function() {
   return connection;
 };
 
+exports.getQuestion = function(connection, sub_id, q_id, complete) {
+  connection.query("SELECT Ques_text from Ques WHERE sub_ID=? AND Ques_ID=?", [sub_id.toString(), q_id.toString()], (err, results, fields) => {
+    if(err) return complete(null, 500);
+    if(results.length == 0) return complete(null, 404);
+    else return complete(results[0].Ques_text, 200);
+  });
+};
+
 exports.login = function(connection, email, password, completeWithStatus) {
   connection.query("SELECT * FROM Student WHERE email=? AND password=?", [email.toString(), password.toString()], (err, results, fields) => {
     if(err) return completeWithStatus(500);
