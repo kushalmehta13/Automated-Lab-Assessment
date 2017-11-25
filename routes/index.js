@@ -56,10 +56,10 @@ router.post('/compilecode', function(req, res, next) {
     const inputRadio = req.body.inputRadio;
     const lang = req.body.lang;
 
-    con.query("SELECT QUES_TEXT, INPUT, EXPECTED_OUTPUT FROM QUES WHERE SUB_ID == 1 AND QUES_ID == 1", function (err, result) {
-      if (err) throw err;
-      console.log(result);
-    });
+    // database.query("SELECT QUES_TEXT, INPUT, EXPECTED_OUTPUT FROM QUES WHERE SUB_ID == 1 AND QUES_ID == 1", function (err, result) {
+    //   if (err) throw err;
+    //   console.log(result);
+    // });
 
     // Store code in bucket and run similarity check
     s3.putObject({
@@ -106,5 +106,41 @@ router.get('/pagecounter', function(req, res){
      res.send("Welcome to this page for the first time!");
   }
 });
+
+//MCQ
+router.get('/mcq', function(req, res, next) {
+  res.render('mcq', { title: 'Solve' });
+});
+
+
+router.get('/questions', function(req, res, next) {
+  data = [{
+  question: "Question 1",
+  option_one: "YES",
+  option_two: "Nope",
+  option_three:"No way!",
+  option_four: "IDK",
+  correct: "one"
+  },
+  {
+  question: "Question 2",
+  option_one: "True",
+  option_two: "False",
+  option_three:"IDK",
+  option_four: "All of the Above",
+  correct: "one"
+},
+{
+  question: "Question 3",
+  option_one: "True",
+  option_two: "False",
+  option_three:"IDK",
+  option_four: "All of the Above",
+  correct: "three"
+}]
+
+res.json(data);
+});
+
 
 module.exports = router;
