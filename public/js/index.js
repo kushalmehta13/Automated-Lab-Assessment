@@ -5,16 +5,16 @@ function submitCode(element, out, langselect, inputcheckbox, custominput) {
   const lang = langselect.val();
   check = "";
   if(checkbox == 'on') {
-    check = 'Yes';
+    check = 'true';
   }
   else {
-    check = 'No';
+    check = 'false';
   }
 
   $.post('/compilecode', {
     'code' : code,
     'input' : input,
-    'inputRadio' : check,
+    'inputRadio' : 'false',
     'lang' : lang
   }).done((output) => {
     // TODO: format and display the output as needed
