@@ -1,5 +1,9 @@
 extends layout
 block content
+  script(type='text/javascript').
+    var email = !{JSON.stringify(email)}
+    sessionStorage.SessionName = "StudentDetails"
+    sessionStorage.setItem("email", email)
   nav.navbar.navbar-inverse.navbar-static-top
     .container-fluid
       .navbar-header

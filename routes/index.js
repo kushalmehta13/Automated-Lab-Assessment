@@ -9,6 +9,9 @@ const staticCodeAnalysis = require('../static_code_analysis.js');
 // For login token
 const secret = 'secret';
 
+var session = require('express-session');
+router.use(session({secret : '1234'}));
+
 // Connect to RDS
 var connection = database.connectToRDS();
 connection.connect((err) => {
@@ -32,7 +35,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/code', function(req, res, next) {
-  res.render('code', { title: 'Solve' });
+  res.render('code', { title: 'Solve'});
 });
 
 router.post('/studentDashboard' , function(req, res, next) {
@@ -40,7 +43,7 @@ router.post('/studentDashboard' , function(req, res, next) {
   const email = req.body.email2;
   const password = req.body.pwd2;
   database.login(connection, email, password, (status) => {
-    if(status == 200) res.render('studentDashboard', { title: 'Solve' });
+    if(status == 200) res.render('studentDashboard', { title: 'Solve', email : email });
     else res.sendStatus(status);
   });
 });
@@ -74,11 +77,7 @@ router.post('/compilecode', function(req, res, next) {
     const input = req.body.input;
     const inputRadio = req.body.inputRadio;
     const lang = req.body.lang;
-
-    // database.query("SELECT QUES_TEXT, INPUT, EXPECTED_OUTPUT FROM QUES WHERE SUB_ID == 1 AND QUES_ID == 1", function (err, result) {
-    //   if (err) throw err;
-    //   console.log(result);
-    // });
+    const email = req.body.email;
 
     // Store code in bucket and run similarity check
     s3.putObject({
@@ -95,7 +94,7 @@ router.post('/compilecode', function(req, res, next) {
     // Compile code and serve output
     if(inputRadio === "true") {
       var envData = { OS : "linux" , cmd : "gcc"};
-      
+
       compiler.compileCPPWithInput(envData , code ,input , function (data) {
         compiler.flushSync();
     		if(data.error) res.send(data.error);
@@ -113,8 +112,7 @@ router.post('/compilecode', function(req, res, next) {
 });
 
 // session setup
-var session = require('express-session');
-router.use(session({secret : '1234'}));
+
 
 router.get('/pagecounter', function(req, res){
   if(req.session.page_views){
