@@ -56,8 +56,7 @@ router.post('/teacherDashboard' , function(req, res, next) {
 // Sample get question
 router.post('/getQuestion', function(req, res) {
   const q_id = req.body.q_id;
-  const sub_id = req.body.sub_id;
-  database.getQuestion(connection, sub_id, q_id, function(data, status) {
+  database.getQuestion(connection, q_id, function(data, status) {
     if(status != 200) res.sendStatus(status);
     s3.getObject({
       Bucket : bucket,
@@ -77,24 +76,37 @@ router.post('/compilecode', function(req, res, next) {
     const input = req.body.input;
     const inputRadio = req.body.inputRadio;
     const lang = req.body.lang;
+
+    // Still not received from client
     const email = req.body.email;
+    const q_id = req.body.q_id;
+    const filepath = email.split('@')[0] + '/' + q_id + '.cpp';
+    const cscpath = email.split('@')[0] + '/csc' + q_id + '.txt';
+    const scapath = email.split('@')[0] + '/sca' + q_id + '.txt';
+
+    console.log(email);
+    console.log(q_id);
+    console.log(filepath);
+    console.log(cscpath);
+    console.log(scapath);
 
     // Store code in bucket and run similarity check
     s3.putObject({
       Bucket : bucket,
-      Key : "file1.cpp",
+      Key : filepath,
       Body : code
     }, (err, data) => {
+      console.log('s3 done?');
       if(err) throw err;
       else console.log(data);
-      codeSimilarityCheck.checkSimilarity('file1.cpp', 'Stu_ans/file2.cpp', 'res.txt');
-      staticCodeAnalysis.analyseFile('file1.cpp', './StaticCodeAnalysis/result.txt');
+      codeSimilarityCheck.checkSimilarity(filepath, 'Stu_ans/file2.cpp', cscpath);
+      staticCodeAnalysis.analyseFile(filepath, './StaticCodeAnalysis/result.txt', scapath);
     });
 
     // Compile code and serve output
     if(inputRadio === "true") {
       var envData = { OS : "linux" , cmd : "gcc"};
-
+      console.log('compiler');
       compiler.compileCPPWithInput(envData , code ,input , function (data) {
         compiler.flushSync();
     		if(data.error) res.send(data.error);
@@ -102,6 +114,7 @@ router.post('/compilecode', function(req, res, next) {
     	});
 	  }
     else {
+      console.log('compiler');
     	var envData = { OS : "linux" , cmd : "gcc"};
       compiler.compileCPP(envData, code, function (data) {
         compiler.flushSync();
