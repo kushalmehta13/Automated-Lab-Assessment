@@ -148,34 +148,33 @@ router.get('/pagecounter', function(req, res){
 });
 
 //MCQ
-router.get('/mcq', function(req, res, next) {
+router.get('/viva', function(req, res, next) {
   res.render('mcq', { title: 'Solve' });
 });
 
 
 router.get('/questions', function(req, res, next) {
   data = [{
-  question: "Question 1",
-  option_one: "YES",
-  option_two: "Nope",
-  option_three:"No way!",
-  option_four: "IDK",
+  question: "What is the complexity of quicksort?",
+  option_one: "O(nlog n)",
+  option_two: "O(n)",
+  option_three:"O(n^2)",
+  option_four: "O(2n^n)",
   correct: "one"
   },
   {
-  question: "Question 2",
-  option_one: "True",
-  option_two: "False",
-  option_three:"IDK",
-  option_four: "All of the Above",
+  question: "What is the time complexity of using quicksort on a linkedlist?",
+  option_one: "O(n^2)",
+  option_two: "O(n)",
+  option_three:"O(n^n)",
+  option_four: "O(log n)",
   correct: "one"
 },
 {
-  question: "Question 3",
-  option_one: "True",
-  option_two: "False",
-  option_three:"IDK",
-  option_four: "All of the Above",
+  question: "Does quicksort sort in place?",
+  option_one: "Yes",
+  option_two: "Depends on values",
+  option_three:"No",
   correct: "three"
 }]
 

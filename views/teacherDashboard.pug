@@ -11,3 +11,51 @@ block content
           a(href="#") Code
         li
           a(href="#") Analytics
+  .container
+    .row
+      .col-md-12
+        h2 Question Setter
+        br
+        form#uploadForm(method='post', enctype='multipart/form-data')
+          .form-group
+            p
+              input(type='textbox', name='subid', ,value='subid', placeholder="Subject ID")
+            br
+            p
+              input(type='textbox', name='qid', ,value='qid', placeholder="Question ID")
+            br
+            p
+              label  Question File: 
+              input(type = "file" name = "qfile",value = "Upload Question")
+            br
+            p
+              label  Solution File: 
+              input(type='file', name='sfile', ,value='Upload Solution')
+            br
+            p
+              label  Input Test cases: 
+              input(type='file', name='ifile', ,value='Upload Input')
+            br
+            p
+              label  Expected Output: 
+              input(type='file', name='ofile', ,value='Upload Output')
+            br
+            p
+              input.btn.btn-default.code-send(type='submit', value='SUBMIT', name='submit')
+
+    script.
+      $(document).ready(function() {
+      $('#uploadForm').submit(function() {
+      $("#status").empty().text("File is uploading...");
+      $(this).ajaxSubmit({
+      error: function(xhr) {
+      status('Error: ' + xhr.status);
+      },
+      success: function(response) {
+      console.log(response)
+      $("#status").empty().text(response);
+      }
+      });
+      return false;
+      });
+      });

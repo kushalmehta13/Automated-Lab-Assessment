@@ -1,14 +1,7 @@
-doctype html
-html
+extends layout
+block content
   head
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    | &#x9;
-    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
-    | &#x9;
-    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
-    | &#x9;
-    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js')
-    | &#x9;
     title MCQ
   |   
   body
@@ -91,12 +84,12 @@ html
         data=result;
         console.log(result);
         for(i = 0; i < data.length; i++){
-        elem = '<div class="six columns centered"> <div class="radio-contain rd-alt"> <p class="rd-title" id = "q_' + i + '"> ' + '<span style = "font-size:30px">'+ i +'.</span>' + data[i]["question"] + '</p> <input type="radio" class="rd-hide" value = "one" name="'+i+'" /><span class="rd-desc" id = "one">' + data[i]["option_one"]+ '</span> <input type="radio" class="rd-hide" value = "two" name="'+i+'" /> <span class="rd-desc" id = "two">' + data[i]["option_two"]+ '</span> <input type="radio" class="rd-hide" value = "three" name="' + i +'" /> <span class="rd-desc" value = "three" id = "'+i+'">' + data[i]["option_three"]+ '</span> <input type="radio" class="rd-hide" name="'+i+'" /><span class="rd-desc" value = "four" id = "four">' + data[i]["option_four"]+ '</span> </div> <br /><hr />'
+        elem = '<div class="six columns centered"> <div class="radio-contain rd-alt"> <p class="rd-title" id = "q_' + i + '"> ' + '<span style = "font-size:30px">'+ i +'.</span>' + data[i]["question"] + '<br>' + '</p> <input type="radio" class="rd-hide" value = "one" name="'+i+'" /><span class="rd-desc" id = "one">' + data[i]["option_one"]+ '<br>'+ '</span> <input type="radio" class="rd-hide" value = "two" name="'+i+'" /> <span class="rd-desc" id = "two">' + data[i]["option_two"]+ '<br>'+ '</span> <input type="radio" class="rd-hide" value = "three" name="' + i +'" /> <span class="rd-desc" value = "three" id = "'+i+'">' + data[i]["option_three"]+ '<br>'+ '</span> <input type="radio" class="rd-hide" name="'+i+'" /><span class="rd-desc" value = "four" id = "four">' + data[i]["option_four"]+ '<br>' + '</span> </div> <br /><hr />'
         $("#main").append(elem);
         }
         }
         });
-        setTimeout(calc, 1000);
+        setTimeout(calc, 100000);
         function calc(){
         console.log("Bhargav");
         var result = 0;
