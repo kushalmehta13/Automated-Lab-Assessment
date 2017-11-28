@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
-
+var formidable = require("formidable")
+var util = require('util')
 const database = require('../database.js');
 const codeSimilarityCheck = require('../code_similarity_check.js');
 const staticCodeAnalysis = require('../static_code_analysis.js');
@@ -34,6 +35,14 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/setViva', function(req, res, next) {
+  res.render('setViva', { title: 'Express' });
+});
+
+router.get('/feedback', function(req, res, next) {
+  res.render('feedback', { title: 'Express' });
+});
+
 router.get('/code', function(req, res, next) {
   res.render('code', { title: 'Solve'});
 });
@@ -46,6 +55,12 @@ router.post('/studentDashboard' , function(req, res, next) {
     if(status == 200) res.render('studentDashboard', { title: 'Solve', email : email });
     else res.sendStatus(status);
   });
+});
+
+router.post('/feedsubmit' , function(req, res, next) {
+  // console.log(req.body.email);
+  // console.log(req.body.feedback);
+  console.log(req.body);
 });
 
 router.post('/teacherDashboard' , function(req, res, next) {

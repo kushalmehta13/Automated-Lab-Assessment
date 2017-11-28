@@ -1,0 +1,28 @@
+extends layout
+block content
+    nav.navbar.navbar-inverse.navbar-static-top
+        .container-fluid
+            .navbar-header
+                a.navbar-brand.text(href="#") {LabWork}
+                ul.nav.navbar-nav
+                    li
+                        a(href="/setViva") Viva
+                    li
+                        a(href="#") Analytics
+    .container
+        .row
+            .col-md-12
+                h2 Viva Question Setter
+                br
+                form#uploadForm(method='post', enctype='multipart/form-data')
+                    .form-group
+                    p
+                        label  Question File: 
+                        input(type = "file" name = "qfile",value = "Upload Question")
+                    br
+                    p
+                        label  Solution File: 
+                        input(type='file', name='sfile', ,value='Upload Solution')
+                    br
+                    p
+                        input.btn.btn-default.code-send(type='submit', value='SUBMIT', name='submit')
