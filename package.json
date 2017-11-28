@@ -18,6 +18,7 @@
     "mysql": "^2.15.0",
     "natural": "^0.5.4",
     "node-run-cmd": "^1.0.1",
+    "nodemailer": "^4.4.0",
     "pug": "~2.0.0-beta11",
     "serve-favicon": "~2.4.2"
   }

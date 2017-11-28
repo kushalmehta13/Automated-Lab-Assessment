@@ -7,9 +7,7 @@ var ml = require('ml-sentiment')();
 const database = require('../database.js');
 const codeSimilarityCheck = require('../code_similarity_check.js');
 const staticCodeAnalysis = require('../static_code_analysis.js');
-
-// For login token
-const secret = 'secret';
+const mailer = require('../mailer.js');
 
 var session = require('express-session');
 router.use(session({secret : '1234'}));
@@ -62,6 +60,7 @@ router.post('/feedsubmit' , function(req, res, next) {
   // console.log(req.body.email);
   // console.log(req.body.feedback);
   var feedback = req.body.feedback;
+  const email = req.body.email;
   var result = ml.classify(feedback)
   var reply = ""
   console.log(feedback);
@@ -71,10 +70,17 @@ router.post('/feedsubmit' , function(req, res, next) {
   }
   else if (result < 0)
   {
-    reply = "We would consider the matter.We regret any in conviniece caused"
+    reply = "We would consider the matter. We regret any inconvenience caused"
   }
   console.log(reply)
   //TODO SEND MAIL!!!!!!!!!!!!!
+  mailer.sendMail({
+    from : '"Automated Lab Assessment" <automatedlabassessment@gmail.com>',
+    to : email,
+    text : reply
+  }, function(data) {
+    res.sendStatus(200);
+  });
   res.render('studentDashboard', { title: 'Solve'});
 });
 
@@ -144,7 +150,7 @@ router.post('/compilecode', function(req, res, next) {
       if(err) throw err;
       else console.log(data);
       codeSimilarityCheck.checkSimilarity(filepath, 'Stu_ans/file2.cpp', cscpath);
-      staticCodeAnalysis.analyseFile(filepath, './StaticCodeAnalysis/result.txt', scapath);
+      staticCodeAnalysis.analyseFile(filepath, './StaticCodeAnalysis/result.txt', scapath, email);
     });
 
     // Compile code and serve output

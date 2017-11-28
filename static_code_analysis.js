@@ -1,6 +1,7 @@
 const fs = require('fs');
 const nrc = require('node-run-cmd');
 const natural = require('natural');
+const mailer = require('./mailer.js');
 
 // Connect to S3
 const Aws = require('aws-sdk');
@@ -40,7 +41,7 @@ function getScore(data, done) {
 	return done(badness);
 }
 
-function readMyFile(path, scapath) {
+function readMyFile(path, scapath, email) {
 	let content;
 	try {
 		content = fs.readFileSync(path, 'utf-8');
@@ -58,10 +59,19 @@ function readMyFile(path, scapath) {
 			if(err) throw err;
 			else console.log('Badness pushed');
 		});
+		// Send email to student
+		mailer.sendMail({
+			from : '"Automated Lab Assessment" <automatedlabassessment@gmail.com>',
+			to : email,
+			subject : 'Your Lab Assessment Score',
+			html : "<p>Your score is " + badness
+		}, function(data) {
+			res.sendStatus(200);
+		});
 	});
 }
 
-exports.analyseFile = function(codeFile, errorFile, scapath) {
+exports.analyseFile = function(codeFile, errorFile, scapath, email) {
 	s3.getObject({
 		Bucket : bucket,
 		Key : 'file1.cpp'
@@ -71,7 +81,7 @@ exports.analyseFile = function(codeFile, errorFile, scapath) {
 			fs.writeFile("./temp/codeFile.cpp", data.Body.toString(), function(err) {
 				if(err) throw err;
 				nrc.run('cppcheck ./temp/codeFile.cpp' + ' 2> ' + errorFile).then(function(exitCodes) {
-					readMyFile(errorFile, scapath);
+					readMyFile(errorFile, scapath, email);
 				});
 			});
 		}
