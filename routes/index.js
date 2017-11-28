@@ -3,6 +3,7 @@ var router = express.Router();
 var fs = require('fs');
 var formidable = require("formidable")
 var util = require('util')
+var ml = require('ml-sentiment')();
 const database = require('../database.js');
 const codeSimilarityCheck = require('../code_similarity_check.js');
 const staticCodeAnalysis = require('../static_code_analysis.js');
@@ -60,7 +61,20 @@ router.post('/studentDashboard' , function(req, res, next) {
 router.post('/feedsubmit' , function(req, res, next) {
   // console.log(req.body.email);
   // console.log(req.body.feedback);
-  console.log(req.body);
+  var feedback = req.body.feedback;
+  var result = ml.classify(feedback)
+  var reply = ""
+  console.log(feedback);
+  if (result >= 0)
+  {
+    reply = "We appreciate your feedback."
+  }
+  else if (result < 0)
+  {
+    reply = "We would consider the matter.We regret any in conviniece caused"
+  }
+  console.log(reply)
+  res.render('studentDashboard', { title: 'Solve'});
 });
 
 router.post('/teacherDashboard' , function(req, res, next) {
@@ -107,9 +121,11 @@ router.post('/getBadness', function(req, res) {
 
 router.post('/compilecode', function(req, res, next) {
   	const code = req.body.code;
-    const input = req.body.input;
+    input = req.body.input;
     const inputRadio = req.body.inputRadio;
     const lang = req.body.lang;
+    intput = "5 4 3 2 1";
+    correct = "1 2 3 4 5";
 
     // Still not received from client
     const email = req.body.email;
@@ -119,16 +135,16 @@ router.post('/compilecode', function(req, res, next) {
     const scapath = email.split('@')[0] + '/sca' + q_id + '.txt';
 
     // Store code in bucket and run similarity check
-    s3.putObject({
-      Bucket : bucket,
-      Key : filepath,
-      Body : code
-    }, (err, data) => {
-      if(err) throw err;
-      else console.log(data);
-      codeSimilarityCheck.checkSimilarity(filepath, 'Stu_ans/file2.cpp', cscpath);
-      staticCodeAnalysis.analyseFile(filepath, './StaticCodeAnalysis/result.txt', scapath);
-    });
+    // s3.putObject({
+    //   Bucket : bucket,
+    //   Key : filepath,
+    //   Body : code
+    // }, (err, data) => {
+    //   if(err) throw err;
+    //   else console.log(data);
+    //   codeSimilarityCheck.checkSimilarity(filepath, 'Stu_ans/file2.cpp', cscpath);
+    //   staticCodeAnalysis.analyseFile(filepath, './StaticCodeAnalysis/result.txt', scapath);
+    // });
 
     // Compile code and serve output
     if(inputRadio === "true") {
@@ -136,7 +152,18 @@ router.post('/compilecode', function(req, res, next) {
       compiler.compileCPPWithInput(envData , code ,input , function (data) {
         compiler.flushSync();
     		if(data.error) res.send(data.error);
-    		else res.send(data.output);
+    		else {
+          var msg = "";
+          var r = data.output.localeCompare(correct);
+          if(r == -1) {
+            msg = "Failed to pass all test cases";
+          }
+          else {
+            msg = "All test cases passed";
+          }
+          console.log(msg);
+          res.send({'m' : msg, 'code' : code});
+        }
     	});
 	  }
     else {
@@ -144,7 +171,18 @@ router.post('/compilecode', function(req, res, next) {
       compiler.compileCPP(envData, code, function (data) {
         compiler.flushSync();
       	if(data.error) res.send(data.error);
-      	else res.send(data.output);
+      	else {
+          var msg = "";
+          var r = data.output.localeCompare(correct);
+          if(r == -1) {
+            msg = "Failed to pass all test cases";
+          }
+          else {
+            msg = "All test cases passed";
+          }
+          console.log(msg);
+          res.send({'m' : msg, 'code' : code});
+        }
       });
     }
 });

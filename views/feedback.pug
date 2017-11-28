@@ -2,15 +2,13 @@ extends layout
 block content
   .container
     .col-md-6
-      form.form-horizontal(action='/feedback', method='POST', enctype='multipart/form-data')
+      form(action='/feedsubmit', method='POST')
         h2 Feedback Form
-        br   
-        .form-group       
-          p
-            input#email.form-control(name='email' type='email' placeholder='email')
-
-          label.control-label(for='feedback') Feedback
-          br
-          textarea#feedback.form-control(rows='5', name='feedback', placeholder='Enter text')
-          br
-          button.btn.btn-default.code-send(type='submit') Submit
+        br  
+        p
+          input#email.form-control(name='email' type='email' placeholder='email')
+        label.control-label(for='feedback') Feedback
+        br
+        textarea#feedback.form-control(rows='5', name='feedback', placeholder='Enter text')
+        br
+        input.btn.btn-default.code-send(type='submit' value="Submit")

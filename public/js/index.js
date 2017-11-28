@@ -21,8 +21,7 @@ function submitCode(element, out, langselect, inputcheckbox, custominput, q_id) 
     'q_id' : q_id.toString()
   }).done((output) => {
     // TODO: format and display the output as needed
-    console.log(out);
-    out.html(output);
-    console.log(output);
+    out.html(output['m']);
+    console.log(output['m']);
   });
 }
