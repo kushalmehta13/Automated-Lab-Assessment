@@ -4,6 +4,7 @@ var fs = require('fs');
 var formidable = require("formidable")
 var util = require('util')
 var ml = require('ml-sentiment')();
+const spawn = require('child_process').spawn;
 const database = require('../database.js');
 const codeSimilarityCheck = require('../code_similarity_check.js');
 const staticCodeAnalysis = require('../static_code_analysis.js');
@@ -123,6 +124,13 @@ router.post('/getBadness', function(req, res) {
       "data" : data.Body.toString(),
       "status" : 200
     });
+  });
+});
+
+router.get('/analytics', function(req, res) {
+  const process = spawn('python',['../Analytics/SQLPython.py']);
+  process.stdout.on('data', function(data) {
+    res.send(data);
   });
 });
 
