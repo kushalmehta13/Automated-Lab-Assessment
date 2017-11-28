@@ -1,0 +1,11 @@
+extends layout
+block content
+  script(type='text/javascript').
+    $(document).ready(function() {
+      var images = [!{JSON.stringify(bar)}, !{JSON.stringify(box)}, !{JSON.stringify(scatter)}]
+      for(var x = 0; x < images.length; ++x) {
+        var i = document.createElement("img");
+        i.src = images[x]
+        document.body.appendChild(i)
+      }
+    });

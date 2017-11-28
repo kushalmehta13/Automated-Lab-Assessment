@@ -128,9 +128,10 @@ router.post('/getBadness', function(req, res) {
 });
 
 router.get('/analytics', function(req, res) {
-  const process = spawn('python',['../Analytics/SQLPython.py']);
-  process.stdout.on('data', function(data) {
-    res.send(data);
+  res.render('analytics', {
+    bar : 'http://s3-us-east-2.amazonaws.com/sourcecodestore/bar.png',
+    box : 'https://s3.us-east-2.amazonaws.com/sourcecodestore/box.png',
+    scatter : 'https://s3.us-east-2.amazonaws.com/sourcecodestore/scatter.png'
   });
 });
 
