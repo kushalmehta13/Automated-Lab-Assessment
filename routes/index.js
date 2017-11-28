@@ -74,6 +74,7 @@ router.post('/feedsubmit' , function(req, res, next) {
     reply = "We would consider the matter.We regret any in conviniece caused"
   }
   console.log(reply)
+  //TODO SEND MAIL!!!!!!!!!!!!!
   res.render('studentDashboard', { title: 'Solve'});
 });
 
@@ -135,16 +136,16 @@ router.post('/compilecode', function(req, res, next) {
     const scapath = email.split('@')[0] + '/sca' + q_id + '.txt';
 
     // Store code in bucket and run similarity check
-    // s3.putObject({
-    //   Bucket : bucket,
-    //   Key : filepath,
-    //   Body : code
-    // }, (err, data) => {
-    //   if(err) throw err;
-    //   else console.log(data);
-    //   codeSimilarityCheck.checkSimilarity(filepath, 'Stu_ans/file2.cpp', cscpath);
-    //   staticCodeAnalysis.analyseFile(filepath, './StaticCodeAnalysis/result.txt', scapath);
-    // });
+    s3.putObject({
+      Bucket : bucket,
+      Key : filepath,
+      Body : code
+    }, (err, data) => {
+      if(err) throw err;
+      else console.log(data);
+      codeSimilarityCheck.checkSimilarity(filepath, 'Stu_ans/file2.cpp', cscpath);
+      staticCodeAnalysis.analyseFile(filepath, './StaticCodeAnalysis/result.txt', scapath);
+    });
 
     // Compile code and serve output
     if(inputRadio === "true") {
@@ -153,16 +154,7 @@ router.post('/compilecode', function(req, res, next) {
         compiler.flushSync();
     		if(data.error) res.send(data.error);
     		else {
-          var msg = "";
-          var r = data.output.localeCompare(correct);
-          if(r == -1) {
-            msg = "Failed to pass all test cases";
-          }
-          else {
-            msg = "All test cases passed";
-          }
-          console.log(msg);
-          res.send({'m' : msg, 'code' : code});
+          res.send(data.output);
         }
     	});
 	  }
@@ -174,7 +166,7 @@ router.post('/compilecode', function(req, res, next) {
       	else {
           var msg = "";
           var r = data.output.localeCompare(correct);
-          if(r == -1) {
+          if(r != 0) {
             msg = "Failed to pass all test cases";
           }
           else {

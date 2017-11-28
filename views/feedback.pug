@@ -1,5 +1,16 @@
 extends layout
 block content
+  nav.navbar.navbar-inverse.navbar-static-top
+    .container-fluid
+      .navbar-header
+        a.navbar-brand.text(href="#") {LabWork}
+      ul.nav.navbar-nav
+        li
+          a(href="#") Task
+        li
+          a(href="/viva") Viva
+        li
+          a(href="/feedback") Feedback
   .container
     .col-md-6
       form(action='/feedsubmit', method='POST')
