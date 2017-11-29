@@ -13,7 +13,7 @@ let transporter = nodemailer.createTransport({
 exports.sendMail = (options, callback) => {
   let mailOptions = options;
   transporter.sendMail(mailOptions, (error, info) => {
-    if(error) throw error;
+    if(error) console.log("Didn't send");
     return callback({ id : info.messageId, response : info.response });
   });
 };
